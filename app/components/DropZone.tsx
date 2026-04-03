@@ -5,12 +5,13 @@ interface DropZoneProps {
   selectedFile: File | null;
 }
 
-const ACCEPTED_FORMATS = ".ogg,.mp3,.wav,.m4a,.flac,.webm,.aac,.wma,.opus,audio/*";
+const ACCEPTED_FORMATS =
+  ".ogg,.mp3,.wav,.m4a,.flac,.webm,.aac,.wma,.opus,audio/*";
 
 function UploadIcon() {
   return (
     <svg
-      className="drop-icon"
+      className="w-12 h-12 mx-auto mb-5 opacity-25 transition-opacity duration-300 group-hover:opacity-50"
       viewBox="0 0 48 48"
       fill="none"
       stroke="currentColor"
@@ -41,17 +42,13 @@ export function DropZone({ onFileSelect, selectedFile }: DropZoneProps) {
     [onFileSelect]
   );
 
-  const className = [
-    "drop-zone",
-    isDragOver && "drag-over",
-    selectedFile && "has-file",
-  ]
-    .filter(Boolean)
-    .join(" ");
-
   return (
     <div
-      className={className}
+      className={`group relative border border-dashed rounded-sm py-14 px-8 text-center cursor-pointer transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] bg-surface mb-6
+        before:absolute before:inset-[-1px] before:rounded-sm before:bg-gradient-to-br before:from-amber-glow before:to-transparent before:opacity-0 before:transition-opacity before:duration-400 before:pointer-events-none
+        hover:before:opacity-100 hover:border-amber hover:bg-surface-raised
+        ${isDragOver ? "border-amber bg-surface-raised scale-[1.005] before:opacity-100" : "border-border"}
+        ${selectedFile ? "border-green border-solid" : ""}`}
       onClick={() => fileInputRef.current?.click()}
       onDragOver={(e) => {
         e.preventDefault();
@@ -61,12 +58,14 @@ export function DropZone({ onFileSelect, selectedFile }: DropZoneProps) {
       onDrop={handleDrop}
     >
       <UploadIcon />
-      <div className="drop-label">Drop audio file here or click to browse</div>
-      <div className="drop-hint">
+      <div className="text-[13px] text-text-dim mb-2 tracking-[0.03em]">
+        Drop audio file here or click to browse
+      </div>
+      <div className="text-[10px] text-text-muted tracking-[0.06em] uppercase">
         ogg / mp3 / wav / m4a / flac / webm / aac &mdash; max 25 mb
       </div>
       {selectedFile && (
-        <div className="file-name">
+        <div className="text-xs text-green mt-3 tracking-[0.03em]">
           {selectedFile.name} ({formatFileSize(selectedFile.size)} MB)
         </div>
       )}
@@ -74,7 +73,7 @@ export function DropZone({ onFileSelect, selectedFile }: DropZoneProps) {
         ref={fileInputRef}
         type="file"
         accept={ACCEPTED_FORMATS}
-        style={{ display: "none" }}
+        className="hidden"
         onChange={(e) => {
           if (e.target.files?.length) onFileSelect(e.target.files[0]);
         }}
