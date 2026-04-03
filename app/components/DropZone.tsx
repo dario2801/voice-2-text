@@ -11,7 +11,7 @@ const ACCEPTED_FORMATS =
 function UploadIcon() {
   return (
     <svg
-      className="w-12 h-12 mx-auto mb-5 opacity-25 transition-opacity duration-300 group-hover:opacity-50"
+      className="w-10 h-10 mx-auto mb-4 opacity-25 transition-opacity duration-300 group-hover:opacity-50"
       viewBox="0 0 48 48"
       fill="none"
       stroke="currentColor"
@@ -44,8 +44,8 @@ export function DropZone({ onFileSelect, selectedFile }: DropZoneProps) {
 
   return (
     <div
-      className={`group relative border border-dashed rounded-sm py-14 px-8 text-center cursor-pointer transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] bg-surface mb-6
-        before:absolute before:inset-[-1px] before:rounded-sm before:bg-gradient-to-br before:from-amber-glow before:to-transparent before:opacity-0 before:transition-opacity before:duration-400 before:pointer-events-none
+      className={`group relative flex-1 min-h-0 flex flex-col items-center justify-center border border-dashed rounded-sm px-8 text-center cursor-pointer transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] bg-surface mb-4
+        before:content-[''] before:absolute before:inset-[-1px] before:rounded-sm before:bg-gradient-to-br before:from-amber-glow before:to-transparent before:opacity-0 before:transition-opacity before:duration-400 before:pointer-events-none
         hover:before:opacity-100 hover:border-amber hover:bg-surface-raised
         ${isDragOver ? "border-amber bg-surface-raised scale-[1.005] before:opacity-100" : "border-border"}
         ${selectedFile ? "border-green border-solid" : ""}`}

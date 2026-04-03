@@ -30,7 +30,7 @@ function Waveform() {
     />
   ));
   return (
-    <div className="flex gap-[3px] items-center h-8 mt-8 justify-center">
+    <div className="flex gap-[3px] items-center h-6 mt-4 justify-center">
       {bars}
     </div>
   );
@@ -40,7 +40,7 @@ export function ProcessingState() {
   return (
     <>
       <Waveform />
-      <div className="flex items-center gap-4 py-7 mt-8">
+      <div className="flex items-center gap-3 py-3 mt-2">
         <Spinner />
         <span className="text-[11px] text-text-dim tracking-[0.06em] animate-[text-pulse_2s_ease-in-out_infinite]">
           Transcribing &amp; translating...

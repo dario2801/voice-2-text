@@ -17,14 +17,6 @@
   --font-serif: var(--font-instrument-serif), "Instrument Serif", serif;
 }
 
-*,
-*::before,
-*::after {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
 body {
   background: var(--color-bg);
   color: var(--color-text);
