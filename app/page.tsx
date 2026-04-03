@@ -120,15 +120,15 @@ export default function Home() {
   return (
     <div className="container">
       <header>
-        <div className="logo">AUDAWORKS</div>
+        <div className="logo">Voice-2-Text</div>
         <h1 className="title">
           Audio to English,
           <br />
           instantly.
         </h1>
         <p className="subtitle">
-          Upload any audio file. We&apos;ll detect the language and translate it
-          to English.
+          Upload any audio file. We&apos;ll detect the language and transcribe it
+          to English using Whisper AI.
         </p>
         <div className="divider" />
       </header>
@@ -223,8 +223,8 @@ export default function Home() {
       </main>
 
       <footer>
-        <span>Powered by Whisper</span>
-        <span>2026</span>
+        <span>Voice-2-Text &mdash; Powered by Whisper</span>
+        <span>&copy; 2026</span>
       </footer>
     </div>
   );
