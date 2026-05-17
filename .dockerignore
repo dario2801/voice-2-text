@@ -1,0 +1,14 @@
+.git
+.github
+.claude
+node_modules
+.next
+out
+uploads
+*.tsbuildinfo
+next-env.d.ts
+docs/design-references
+npm-debug.log*
+*.local
+.DS_Store
+Thumbs.db
