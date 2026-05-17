@@ -1,0 +1,30 @@
+# Easiest way to run Voice-2-Text on your own machine or a VM:
+#
+#   docker compose up -d --build
+#
+# Then open http://localhost:3000  (or put a tunnel/proxy in front — see
+# DEPLOY.md). Stop with:  docker compose down
+
+services:
+  voice2text:
+    build: .
+    image: voice2text:latest
+    container_name: voice2text
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      # Set to 1 only behind Caddy/Nginx/Cloudflare Tunnel:
+      - TRUST_PROXY=0
+      # Tunables (defaults shown — uncomment to change):
+      # - RATE_LIMIT_MAX=5
+      # - RATE_LIMIT_WINDOW_MS=600000
+      # - TRANSCRIBE_MAX_CONCURRENCY=1
+      # - TRANSCRIBE_MAX_DURATION_SEC=600
+    volumes:
+      # Persist the Whisper model across rebuilds (no re-download).
+      - whisper-cache:/root/.cache/whisper
+    restart: unless-stopped
+
+volumes:
+  whisper-cache:
