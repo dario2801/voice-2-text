@@ -4,3 +4,6 @@ out
 uploads
 *.tsbuildinfo
 next-env.d.ts
+
+# Claude Code local (per-user) settings
+.claude/settings.local.json
