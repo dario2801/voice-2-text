@@ -8,19 +8,20 @@ interface DropZoneProps {
 const ACCEPTED_FORMATS =
   ".ogg,.mp3,.wav,.m4a,.flac,.webm,.aac,.wma,.opus,audio/*";
 
-function UploadIcon() {
+function UploadMark() {
   return (
     <svg
-      className="w-10 h-10 mx-auto mb-4 opacity-25 transition-opacity duration-300 group-hover:opacity-50"
+      className="w-9 h-9 mb-5 opacity-30 transition-opacity duration-300 group-hover:opacity-60"
       viewBox="0 0 48 48"
       fill="none"
       stroke="currentColor"
-      strokeWidth="1.5"
+      strokeWidth="1.25"
       strokeLinecap="round"
       strokeLinejoin="round"
+      aria-hidden
     >
-      <path d="M24 32V12M24 12l-8 8M24 12l8 8" />
-      <path d="M8 36h32" />
+      <path d="M24 32V11M24 11l-8 8M24 11l8 8" />
+      <path d="M9 37h30" />
     </svg>
   );
 }
@@ -33,6 +34,8 @@ export function DropZone({ onFileSelect, selectedFile }: DropZoneProps) {
   const [isDragOver, setIsDragOver] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  const open = useCallback(() => fileInputRef.current?.click(), []);
+
   const handleDrop = useCallback(
     (e: React.DragEvent) => {
       e.preventDefault();
@@ -44,12 +47,20 @@ export function DropZone({ onFileSelect, selectedFile }: DropZoneProps) {
 
   return (
     <div
-      className={`group relative flex-1 min-h-0 flex flex-col items-center justify-center border border-dashed rounded-sm px-8 text-center cursor-pointer transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] bg-surface mb-4
-        before:content-[''] before:absolute before:inset-[-1px] before:rounded-sm before:bg-gradient-to-br before:from-amber-glow before:to-transparent before:opacity-0 before:transition-opacity before:duration-400 before:pointer-events-none
-        hover:before:opacity-100 hover:border-amber hover:bg-surface-raised
-        ${isDragOver ? "border-amber bg-surface-raised scale-[1.005] before:opacity-100" : "border-border"}
-        ${selectedFile ? "border-green border-solid" : ""}`}
-      onClick={() => fileInputRef.current?.click()}
+      role="button"
+      tabIndex={0}
+      aria-label="Upload an audio file: drop it here, or press Enter to browse"
+      className={`group relative flex-1 min-h-0 flex flex-col items-center justify-center border border-dashed rounded-sm p-10 max-sm:p-8 text-center cursor-pointer transition-all duration-300 ease-[var(--ease-out)] bg-surface
+        hover:border-accent hover:bg-surface-raised
+        ${isDragOver ? "border-accent bg-surface-raised scale-[1.004]" : "border-border"}
+        ${selectedFile ? "!border-success border-solid" : ""}`}
+      onClick={open}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          open();
+        }
+      }}
       onDragOver={(e) => {
         e.preventDefault();
         setIsDragOver(true);
@@ -57,18 +68,34 @@ export function DropZone({ onFileSelect, selectedFile }: DropZoneProps) {
       onDragLeave={() => setIsDragOver(false)}
       onDrop={handleDrop}
     >
-      <UploadIcon />
-      <div className="text-[13px] text-text-dim mb-2 tracking-[0.03em]">
-        Drop audio file here or click to browse
+      <span className="absolute top-6 left-6 font-mono text-[10px] tracking-[0.3em] uppercase text-text-muted">
+        01 &mdash; Source
+      </span>
+
+      <UploadMark />
+      <div className="font-serif italic text-[26px] leading-none text-text">
+        {isDragOver ? "Release to load" : "Drop your audio"}
       </div>
-      <div className="text-[10px] text-text-muted tracking-[0.06em] uppercase">
-        ogg / mp3 / wav / m4a / flac / webm / aac &mdash; max 25 mb
+      <div className="font-mono text-[10px] tracking-[0.22em] uppercase text-text-dim mt-3">
+        or click to browse
       </div>
+      <div className="font-mono text-[9px] tracking-[0.18em] uppercase text-text-muted mt-6">
+        ogg &middot; mp3 &middot; wav &middot; m4a &middot; flac &middot; webm
+        &middot; aac &mdash; max 25mb
+      </div>
+
       {selectedFile && (
-        <div className="text-xs text-green mt-3 tracking-[0.03em]">
-          {selectedFile.name} ({formatFileSize(selectedFile.size)} MB)
+        <div className="mt-6 inline-flex items-center gap-2.5 font-mono text-[11px] tracking-[0.06em] text-accent">
+          <span className="w-1.5 h-1.5 bg-success rounded-full" aria-hidden />
+          <span className="truncate max-w-[60vw] md:max-w-[22ch]">
+            {selectedFile.name}
+          </span>
+          <span className="text-text-dim">
+            {formatFileSize(selectedFile.size)} MB
+          </span>
         </div>
       )}
+
       <input
         ref={fileInputRef}
         type="file"

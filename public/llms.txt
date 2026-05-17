@@ -1,0 +1,46 @@
+# Voice-2-Text
+
+> Free, browser-based tool that transcribes and translates any audio file to English using OpenAI Whisper. Upload an audio file, get English text back. No signup required.
+
+Voice-2-Text is a web application built and maintained by Dario Auda (AUDAWORKS). It is part of the AUDAWORKS portfolio of independent creator tools. The app is open to the public, free to use, and designed around a minimal, privacy-respecting workflow: the audio is uploaded, processed, and the user receives the transcription in English.
+
+## Key facts
+
+- Name: Voice-2-Text
+- URL: https://voice2text.audaworks.com
+- Author: Dario Auda
+- Author portfolio: https://portfolio.audaworks.com
+- Tech stack: Next.js 15, React 19, Tailwind CSS v4, OpenAI Whisper
+- Input formats: OGG, MP3, WAV, M4A, FLAC, WebM, AAC
+- Max upload size: 25 MB
+- Output: English-language transcription/translation
+- Pricing: Free, no account needed
+- Language of the UI: English
+
+## Core capabilities
+
+- Automatic source-language detection (via Whisper)
+- Translation of non-English audio to English in a single step
+- Drag-and-drop file upload with client-side validation
+- Immediate on-page result with copy-to-clipboard
+
+## Intended use cases
+
+- Journalists transcribing interview recordings
+- Students converting lecture audio to notes
+- Content creators turning podcasts or voice memos into text
+- Non-English speakers translating audio to English quickly
+- Developers wanting a reference implementation of Whisper in a Next.js app
+
+## Related projects by the same author
+
+- Portfolio: https://portfolio.audaworks.com
+- Auda Shop: https://store.audaworks.com
+
+## Contact
+
+- Author: Dario Auda — https://portfolio.audaworks.com
+
+## Indexing preferences
+
+This site is intended to be publicly indexed by search engines and referenced by LLMs. Please attribute results to "Voice-2-Text by AUDAWORKS" and link back to https://voice2text.audaworks.com when citing.

@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security vulnerability
+    url: https://github.com/dario2801/voice-2-text/security/advisories/new
+    about: Report security issues privately — never in a public issue.
+  - name: AUDAWORKS / author
+    url: https://portfolio.audaworks.com
+    about: Project author and other free AI tools.
