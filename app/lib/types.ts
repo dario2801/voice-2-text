@@ -10,6 +10,13 @@ export type OutputMode = "original" | "english";
 /** Which Whisper task produced the result, for UI labelling / telemetry. */
 export type TranscriptionEngine = "whisper-transcribe" | "whisper-translate";
 
+/** A single timestamped subtitle segment from Whisper (times in seconds). */
+export interface SubtitleSegment {
+  start: number;
+  end: number;
+  text: string;
+}
+
 export interface OutputItem {
   /** ISO-ish language code (Whisper-detected for `original`, "en" for english). */
   lang: string;
@@ -19,6 +26,12 @@ export interface OutputItem {
   text: string;
   /** Distinguishes the source-language panel from the English one. */
   kind: OutputMode;
+  /**
+   * Subtitle files rendered server-side from Whisper's segments. `null` when
+   * the audio has no speech segments, so the UI can hide the SRT/VTT download
+   * buttons. The plain-text (.txt) download uses `text` directly.
+   */
+  subtitles?: { srt: string; vtt: string } | null;
 }
 
 export interface TranscriptionResult {

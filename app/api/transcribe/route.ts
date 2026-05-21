@@ -9,10 +9,12 @@ import type {
   ApiError,
   OutputMode,
   TranscriptionEngine,
+  SubtitleSegment,
 } from "../../lib/types";
 import { labelForLanguage } from "../../lib/languages";
 import { checkRateLimit, getClientIp } from "../../lib/rateLimit";
 import { acquireSlot } from "../../lib/concurrency";
+import { toSrt, toVtt } from "../../lib/subtitles";
 
 // --- Configuration -------------------------------------------------------
 
@@ -149,15 +151,25 @@ function runFfprobe(
 function runWhisper(
   filePath: string,
   task: "transcribe" | "translate"
-): Promise<{ text: string; language: string }> {
+): Promise<{ text: string; language: string; segments: SubtitleSegment[] }> {
   // `task` is validated against a fixed allowlist before reaching here, and
   // execFile passes args without a shell, so there is no injection surface.
+  // We also surface Whisper's per-segment timestamps so the route can render
+  // SRT/VTT subtitles server-side (they were previously computed and dropped).
   const pythonScript = `
 import sys, json, whisper, warnings
 warnings.filterwarnings("ignore")
 model = whisper.load_model("small")
 result = model.transcribe(sys.argv[1], task=sys.argv[2])
-print(json.dumps({"text": result["text"].strip(), "language": result.get("language", "unknown")}))
+segments = [
+    {"start": s["start"], "end": s["end"], "text": s["text"].strip()}
+    for s in result.get("segments", [])
+]
+print(json.dumps({
+    "text": result["text"].strip(),
+    "language": result.get("language", "unknown"),
+    "segments": segments,
+}))
 `;
 
   return new Promise((resolve, reject) => {
@@ -176,7 +188,16 @@ print(json.dumps({"text": result["text"].strip(), "language": result.get("langua
           return;
         }
         try {
-          resolve(JSON.parse(stdout.trim()));
+          // Trust our own script's shape, but guarantee the fields exist and
+          // that `segments` is an array so the SRT/VTT renderers (which do the
+          // fine-grained cue sanitising) never see a non-iterable.
+          const parsed = JSON.parse(stdout.trim());
+          resolve({
+            text: typeof parsed?.text === "string" ? parsed.text : "",
+            language:
+              typeof parsed?.language === "string" ? parsed.language : "unknown",
+            segments: Array.isArray(parsed?.segments) ? parsed.segments : [],
+          });
         } catch {
           console.error("Whisper parse error. stdout:", stdout);
           reject(new Error("Failed to parse transcription result."));
@@ -329,7 +350,7 @@ export async function POST(request: NextRequest) {
     // 11. Run Whisper. mode=english -> translate (English only, Whisper's
     //     native path). mode=original -> transcribe (source language).
     const task = mode === "english" ? "translate" : "transcribe";
-    let whisper: { text: string; language: string };
+    let whisper: { text: string; language: string; segments: SubtitleSegment[] };
     try {
       whisper = await runWhisper(filePath, task);
     } catch (err) {
@@ -346,6 +367,12 @@ export async function POST(request: NextRequest) {
     const engine: TranscriptionEngine =
       mode === "english" ? "whisper-translate" : "whisper-transcribe";
 
+    // Render subtitles server-side. `toSrt` returns "" when there are no usable
+    // cues (e.g. no speech), in which case we send `null` so the UI hides the
+    // SRT/VTT buttons. Both formats derive from the same cues, so one check.
+    const srt = toSrt(whisper.segments);
+    const subtitles = srt ? { srt, vtt: toVtt(whisper.segments) } : null;
+
     const result: TranscriptionResult = {
       sourceLang,
       sourceLangLabel: labelForLanguage(sourceLang),
@@ -355,6 +382,7 @@ export async function POST(request: NextRequest) {
           label: labelForLanguage(outLang),
           text: whisper.text,
           kind: mode,
+          subtitles,
         },
       ],
       engine,

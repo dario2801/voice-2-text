@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Voice-2-Text — Audio Transcription & Translation",
+    name: "Voice-2-Text Audio Transcription & Translation",
     short_name: "Voice-2-Text",
     description:
       "Free browser-based tool to transcribe audio in its original language or translate it to English with Whisper AI. A free AUDAWORKS AI tool.",

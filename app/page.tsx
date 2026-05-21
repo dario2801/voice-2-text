@@ -68,7 +68,7 @@ export default function Home() {
   return (
     <div
       ref={introScope}
-      className="h-dvh flex flex-col max-w-[1180px] mx-auto px-10 py-9 max-md:px-5 max-md:py-6"
+      className="min-h-dvh flex flex-col max-w-[1180px] mx-auto px-10 py-9 max-md:px-5 max-md:py-6"
     >
       <Header />
 
@@ -106,7 +106,7 @@ export default function Home() {
             className="relative z-10 flex-1 min-h-0 flex flex-col"
             data-animate
           >
-            <div className="flex-1 min-h-0 flex flex-col bg-surface border border-border rounded-sm p-7 max-md:p-6 overflow-hidden">
+            <div className="flex-1 min-h-0 flex flex-col bg-surface border border-border rounded-sm p-7 max-md:p-6 overflow-hidden shadow-[var(--shadow-soft)]">
               {result ? (
                 <ResultPanel result={result} />
               ) : (
@@ -173,11 +173,19 @@ export default function Home() {
 
           <div className="flex gap-3 items-center max-sm:flex-col">
             <button
-              className="flex-1 font-mono text-[11px] font-medium tracking-[0.25em] uppercase text-bg bg-accent border-none py-3.5 px-8 rounded-sm cursor-pointer transition-all duration-300 relative overflow-hidden hover:not-disabled:bg-accent-hover hover:not-disabled:-translate-y-px hover:not-disabled:shadow-[0_6px_28px_var(--color-accent-dim)] active:not-disabled:translate-y-0 disabled:opacity-40 disabled:cursor-not-allowed"
+              className="group flex-1 font-mono text-[11px] font-medium tracking-[0.25em] uppercase text-bg bg-accent border-none py-3.5 px-8 rounded-sm cursor-pointer transition-all duration-300 relative overflow-hidden hover:not-disabled:bg-accent-hover hover:not-disabled:-translate-y-px hover:not-disabled:shadow-[0_6px_28px_var(--color-accent-dim)] active:not-disabled:translate-y-0 disabled:opacity-40 disabled:cursor-not-allowed"
               disabled={!selectedFile || isProcessing}
               onClick={handleSubmit}
             >
-              {mode === "english" ? "Translate to English" : "Transcribe"}
+              <span className="inline-flex items-center justify-center gap-2.5">
+                {mode === "english" ? "Translate to English" : "Transcribe"}
+                <span
+                  aria-hidden
+                  className="transition-transform duration-300 group-hover:translate-x-1"
+                >
+                  &rarr;
+                </span>
+              </span>
             </button>
             <button
               className="font-mono text-[10px] tracking-[0.15em] uppercase text-text-dim bg-transparent border border-border py-3.5 px-5 rounded-sm cursor-pointer transition-all duration-300 hover:border-text-dim hover:text-text max-sm:w-full"
@@ -203,7 +211,7 @@ export default function Home() {
         data-animate
       >
         <span>Voice&middot;2&middot;Text &mdash; Whisper&nbsp;AI</span>
-        <nav aria-label="Author projects" className="flex gap-6">
+        <nav aria-label="Author portfolio" className="flex gap-6">
           <a
             href="https://portfolio.audaworks.com"
             target="_blank"
@@ -211,14 +219,6 @@ export default function Home() {
             className="hover:text-text transition-colors"
           >
             Portfolio
-          </a>
-          <a
-            href="https://store.audaworks.com"
-            target="_blank"
-            rel="noopener"
-            className="hover:text-text transition-colors"
-          >
-            Auda Shop
           </a>
         </nav>
         <span>&copy; 2026 Dario Auda</span>

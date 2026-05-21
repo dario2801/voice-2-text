@@ -24,7 +24,7 @@ const AUTHOR_URL = "https://portfolio.audaworks.com";
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Voice-2-Text — Free Audio Transcription & Translation",
+    default: "Voice-2-Text Free Audio Transcription & Translation",
     template: "%s | Voice-2-Text",
   },
   description:
@@ -57,7 +57,7 @@ export const metadata: Metadata = {
     canonical: "/",
   },
   openGraph: {
-    title: "Voice-2-Text — Free Audio Transcription & Translation",
+    title: "Voice-2-Text Free Audio Transcription & Translation",
     description:
       "Upload any audio file and get a clean transcript in its original language, or an English translation. Powered by Whisper AI. Free, no signup. A free AUDAWORKS AI tool.",
     url: SITE_URL,
@@ -69,13 +69,13 @@ export const metadata: Metadata = {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Voice-2-Text — audio transcription & translation tool by AUDAWORKS",
+        alt: "Voice-2-Text audio transcription & translation tool by AUDAWORKS",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Voice-2-Text — Free Audio Transcription & Translation",
+    title: "Voice-2-Text Free Audio Transcription & Translation",
     description:
       "Transcribe audio in its original language or translate it to English. Powered by Whisper AI. A free AUDAWORKS AI tool.",
     images: ["/og-image.png"],
@@ -186,6 +186,8 @@ export default async function RootLayout({
         />
       </head>
       <body className="antialiased">
+        {/* Human <-> machine hands backdrop (behind all content). */}
+        <div aria-hidden className="bg-hands" />
         {/* Print-proof crop marks framing the page (editorial signature). */}
         <div aria-hidden className="crop-frame">
           <span />

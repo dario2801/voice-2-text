@@ -50,7 +50,7 @@ export function DropZone({ onFileSelect, selectedFile }: DropZoneProps) {
       role="button"
       tabIndex={0}
       aria-label="Upload an audio file: drop it here, or press Enter to browse"
-      className={`group relative flex-1 min-h-0 flex flex-col items-center justify-center border border-dashed rounded-sm p-10 max-sm:p-8 text-center cursor-pointer transition-all duration-300 ease-[var(--ease-out)] bg-surface
+      className={`group relative flex-1 min-h-0 flex flex-col items-center justify-center border border-dashed rounded-sm p-10 max-sm:p-8 text-center cursor-pointer transition-all duration-300 ease-[var(--ease-out)] bg-surface shadow-[var(--shadow-soft)]
         hover:border-accent hover:bg-surface-raised
         ${isDragOver ? "border-accent bg-surface-raised scale-[1.004]" : "border-border"}
         ${selectedFile ? "!border-success border-solid" : ""}`}

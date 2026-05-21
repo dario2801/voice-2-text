@@ -7,3 +7,6 @@ next-env.d.ts
 
 # Claude Code local (per-user) settings
 .claude/settings.local.json
+
+# Local-only business strategy — repo is public, keep this off GitHub
+docs/PLAN-EJECUCION-NEGOCIO.md

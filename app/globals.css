@@ -37,6 +37,17 @@
   --grid-size: 28px;
   --grid-line: color-mix(in srgb, var(--color-text) 5%, transparent);
   --grid-line-major: color-mix(in srgb, var(--color-text) 7%, transparent);
+  /* Hands backdrop knobs:
+     --hands-opacity : intensity (0 = hidden, 1 = full)
+     --hands-rotate  : tilt (negative = left)
+     --hands-size    : image height (bigger value = larger)
+     --hands-y       : vertical offset (more negative = higher up)
+     --hands-x       : horizontal offset (positive = right) */
+  --hands-opacity: 0.22;
+  --hands-rotate: -28deg;
+  --hands-size: 150vh;
+  --hands-y: -16vh;
+  --hands-x: 12vw;
 }
 
 body {
@@ -75,6 +86,35 @@ body::before {
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   pointer-events: none;
   z-index: 100;
+}
+
+/* Hero backdrop: human <-> machine hands meeting (Creation-of-Adam motif).
+   Anchored bottom-center, above the paper grid but BEHIND all content
+   (z-index -1), and faint so text/panels keep WCAG AA contrast. Intensity
+   via --hands-opacity. */
+.bg-hands {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background-image: url("/images/robots.webp");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: auto var(--hands-size);
+  transform: translate(var(--hands-x), var(--hands-y)) rotate(var(--hands-rotate));
+  /* Dissolve the engraving into the paper at the edges so it always reads
+     as an intentional atmospheric backdrop, not a hard-cropped image. */
+  -webkit-mask-image: radial-gradient(
+    ellipse 82% 76% at 54% 42%,
+    #000 36%,
+    transparent 82%
+  );
+  mask-image: radial-gradient(
+    ellipse 82% 76% at 54% 42%,
+    #000 36%,
+    transparent 82%
+  );
+  opacity: var(--hands-opacity);
+  pointer-events: none;
 }
 
 /* Keyframe animations — must stay in CSS */
